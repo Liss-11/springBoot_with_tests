@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/j9_multiCityHospital2
+    username: ironhacker
+    password: 1r0nh4ck3r
+  jpa:
+    show-sql: true # show the commands that are being executed
+    # generate-ddl : true
+    hibernate:
+      ddl-auto: create
+  profiles:
+    active: demo
+
+server:
+  port: 9090
