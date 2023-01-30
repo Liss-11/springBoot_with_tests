@@ -59,18 +59,4 @@ public class PatientService {
         employee.ifPresent(updatePatient::setEmployee);
         return patientRepository.save(updatePatient);
     }
-
-
-    public void delete(Long id) {
-
-        var patient = patientRepository.findById(id).orElseThrow();
-        patientRepository.delete(patient);
-    }
-
-    public Patient editName(Long id, String name) {
-        var patient = patientRepository.findById(id).orElseThrow();
-
-        patient.setName(name);
-        return patientRepository.save(patient);
-    }
 }

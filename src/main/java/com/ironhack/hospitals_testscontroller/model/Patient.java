@@ -25,9 +25,9 @@ public class Patient {
     //  @JsonBackReference
     private Employee employee;
 
-    public Patient(String name, LocalDate dateOgBirth, Employee employee) {
+    public Patient(String name, LocalDate dateOfBirth, Employee employee) {
         this.name = name;
-        this.dateOfBirth = dateOgBirth;
+        this.dateOfBirth = dateOfBirth;
         this.employee = employee;
     }
 

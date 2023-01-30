@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class EmployeeDTO {
+public class EmployeeResponseDTO {
     @NotNull
     private Long id;
 
@@ -21,8 +21,18 @@ public class EmployeeDTO {
     @NotNull
     private Status status;
 
-    public static EmployeeDTO fromEmployee(Employee employee){
-        var employeeDTO = new EmployeeDTO();
+    public EmployeeResponseDTO(Long id, String department, String name, Status status) {
+        this.id = id;
+        this.department = department;
+        this.name = name;
+        this.status = status;
+    }
+
+    public EmployeeResponseDTO() {
+    }
+
+    public static EmployeeResponseDTO fromEmployee(Employee employee){
+        var employeeDTO = new EmployeeResponseDTO();
         employeeDTO.setId(employee.getId());
         employeeDTO.setDepartment(employee.getDepartment());
         employeeDTO.setName(employee.getName());

@@ -36,8 +36,8 @@ public class PatientController {
         return patientService.findByDateOfBirthBetween(from, to);
     }
 
-    @GetMapping("/doctor_department/{name}")
-    private List<Patient> getPatientsByDoctorDepartment(@PathVariable ("name") String department){
+    @GetMapping("/doctor_department/{department}")
+    private List<Patient> getPatientsByDoctorDepartment(@PathVariable ("department") String department){
         return patientService.findByEmployeeDepartment(department);
     }
 
@@ -69,15 +69,6 @@ public class PatientController {
         return patientService.updatePatientParams(id, name, dateOfBirth, employee);
     }
 
-    @PatchMapping("/editName/{id}")
-    public Patient editPatientName (@PathVariable Long id,
-                                    @RequestParam String name){
-        return patientService.editName(id, name);
-    }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePatient (@PathVariable (name = "id") Long id){
-        patientService.delete(id);
-    }
+
 }

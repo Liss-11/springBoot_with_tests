@@ -1,9 +1,13 @@
 package com.ironhack.hospitals_testscontroller.controller;
 
-import com.ironhack.hospitals_testscontroller.dto.EmployeeDTO;
+import com.ironhack.hospitals_testscontroller.dto.EmployeeDepartmentDTO;
+import com.ironhack.hospitals_testscontroller.dto.EmployeeResponseDTO;
+import com.ironhack.hospitals_testscontroller.dto.EmployeeStatusDTO;
 import com.ironhack.hospitals_testscontroller.enums.Status;
 import com.ironhack.hospitals_testscontroller.model.Employee;
+import com.ironhack.hospitals_testscontroller.repository.EmployeeRepository;
 import com.ironhack.hospitals_testscontroller.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,50 +22,42 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @GetMapping
-    public List<EmployeeDTO> getAllDoctors(){
-        return employeeService.findAll();
+    private final EmployeeRepository employeeRepository;
+
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public List<Employee> filterDoctors(@RequestParam Optional<Status> status, @RequestParam Optional<String> department) {
+        if (status.isPresent()) {
+            return employeeRepository.findByStatus(status.get());
+        } else if (department.isPresent()) {
+            return employeeRepository.findByDepartment(department.get());
+        } else {
+            return employeeRepository.findAll();
+        }
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Employee getDoctorById(@PathVariable("id") Long employee_id){
         return employeeService.findById(employee_id);
     }
 
-    @GetMapping("/status/{value}")
-    public List<Employee> getDoctorByStatus(@PathVariable ("value") Status status){
-        return employeeService.findByStatus(status);
-    }
-
-    @GetMapping("/department/{name}")
-    public List<Employee> getDoctorsByDepartment(@PathVariable ("name") String department){
-        return employeeService.findByDepartment(department);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO){
+    public EmployeeResponseDTO createEmployee(@Valid @RequestBody EmployeeResponseDTO employeeDTO){
         return employeeService.createEmployee(employeeDTO);
     }
 
-    @PatchMapping("/{id}")
-    public EmployeeDTO changeStatusEmployee(@PathVariable (name = "id") Long id,
-                                            /*@RequestParam (required = false) Status status,
-                                            @RequestParam (required = false) String department){*/
-                                            @RequestParam Optional <Status> status,
-                                            @RequestParam Optional<String> department){
-        return employeeService.changeStatusOrDepartmentEmployee(id, status, department);
-
+    @PatchMapping("/{id}/status")
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeResponseDTO updateStatus(@PathVariable Long id, @Valid @RequestBody EmployeeStatusDTO employeeStatusDto) {
+        return employeeService.updateStatus(id, employeeStatusDto);
     }
 
-
-    @PutMapping("/{id}")
-    public EmployeeDTO updateEmployee(@PathVariable (name = "id") Long id,
-                                      @RequestParam (required = false) String department,
-                                      @RequestParam (required = false) String name,
-                                      @RequestParam (required = false) Status status){
-        return employeeService.updateEmployee(id, department, name, status);
-
+    @PatchMapping("/{id}/department")
+    @ResponseStatus(HttpStatus.OK)
+    public EmployeeResponseDTO updateDepartment(@PathVariable Long id, @Valid @RequestBody EmployeeDepartmentDTO employeeDepartmentDto) {
+        return employeeService.updateDepartment(id, employeeDepartmentDto);
     }
 
 }

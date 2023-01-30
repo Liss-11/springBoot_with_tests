@@ -1,7 +1,7 @@
 package com.ironhack.hospitals_testscontroller.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ironhack.hospitals_testscontroller.dto.EmployeeDTO;
+import com.ironhack.hospitals_testscontroller.dto.EmployeeResponseDTO;
 import com.ironhack.hospitals_testscontroller.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -37,7 +37,7 @@ public class Employee {
         this.status = status;
     }
 
-    public static Employee fromDTO(EmployeeDTO employeeDTO){
+    public static Employee fromDTO(EmployeeResponseDTO employeeDTO){
         var employee = new Employee();
         employee.setId(employeeDTO.getId());
         employee.setName(employeeDTO.getName());
